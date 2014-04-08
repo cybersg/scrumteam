@@ -8,14 +8,14 @@ from flask_mongokit import MongoKit
 def init_db():
     db = MongoKit(app)
     app.config['DB'] = db
+    db.register(models.documents())
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.config.from_object('scrumteam.conf.Config')
 
-init_db()
 import models
-models.documents()
-
+init_db()
+db = app.config['DB']
 import views
 
 

@@ -10,4 +10,4 @@ from scrumteam import app
 app.register_blueprint(user_api.user_api)
 api = Api(app)
 api.add_resource(user_api.UserApi, '/users', endpoint='users')
-api.add_resource(user_api.UserApi, '/user/<login>', endpoint='user')
+api.add_resource(user_api.UserApi, '/users/<login>', endpoint='user')

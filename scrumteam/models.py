@@ -6,6 +6,7 @@ from flask_mongokit import Document
 
 class User(Document):
     __collection__ = 'users'
+    use_dot_notation = True
     structure = {
         'login': basestring,
         'password': basestring,
@@ -15,6 +16,7 @@ class User(Document):
     default_values = {
         'admin': False
     }
+
 
 def documents():
     return [User]

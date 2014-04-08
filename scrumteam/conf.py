@@ -4,4 +4,4 @@ __author__ = 'cybersg'
 
 class Config(object):
     SECRET_KEY = '8711a63b-38e8'
-    MONGODB_DATABSE = 'scrumteam'
+    MONGODB_DATABASE = 'scrumteam'
