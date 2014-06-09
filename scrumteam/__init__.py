@@ -2,20 +2,25 @@
 #-*- coding: utf-8 -*-
 __author__ = 'cybersg'
 
-from flask import Flask
+from flask import Flask, g
 from flask_mongokit import MongoKit
 
-def init_db():
-    db = MongoKit(app)
-    app.config['DB'] = db
-    db.register(models.documents())
-
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__, template_folder='static')
 app.config.from_object('scrumteam.conf.Config')
 
 import models
-init_db()
-db = app.config['DB']
+db = MongoKit(app)
+app.config['DB'] = db
+db.register(models.documents())
+
+def get_db():
+    global db
+    cn = getattr(g, 'db', None)
+    if cn is None:
+        cn = db
+    return cn
+
+
 import views
 
 

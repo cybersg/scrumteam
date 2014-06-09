@@ -1,0 +1,10 @@
+<p><input type="text" data-bind="value: login" /></p>
+<p><input type="password" data-bind="value: password" /></p>
+<p><button data-bind="click: generateHistoryInit">Generate history</button></p>
+<div id="err-msg" data-bind="click: clearErrMsg, disable: inProgress"></div>
+
+<div class="progress" data-bind="visible: currentProgress() > 0">
+  <div class="progress-bar" role="progressbar" data-bind="attr: {'aria-valuenow': currentProgress}, style: {width: percentComplete}" aria-valuemin="0" aria-valuemax="100">
+  </div>
+</div>
+<div id="progress-msg" data-bind="text: percentCompleteMsg, visible: inProgress"></div>

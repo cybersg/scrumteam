@@ -19,6 +19,8 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script src="static/js/knockout.mapping-latest.js"></script>
+<script data-main="static/js/app.js" src="static/js/require.js"></script>
 </head>
 <body>
     <div class="page-header"><a href="#" data-bind="click: $root.home">ScrumTeam</a></div>
@@ -28,8 +30,9 @@
     <ul class="nav navbar-pills nav-justified" data-bind="foreach: submenu, visible: $root.submenu().length > 0">
         <li data-bind="css: {active: $data == $parent.currentSubMenu()}"><a data-bind="text: $data, click: $parent.loadSubMenuContents"></a></li>
     </ul>
-    <div id="template-container" class="container">
+    <div class="container" id="template-container">
+        <div id="err-msg" data-bind="click: clearErrMsg"></div>
+        <div id="template-container-content"></div>
     </div>
 </body>
-<script src="js/app.js" type="text/javascript"></script>
 </html>
