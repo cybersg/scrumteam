@@ -95,20 +95,36 @@ class EstimatesHistory(object):
         #     # break
         #     r['tasks'] = [r['tasks']]
         #     results.append(r)
-        # results = []
-        from scrumteam import app
-        app.logger.debug(phrase);
-        for r in self.db.Sprint.find(
-            { '$or': [
+        results = []
+        sprints = {}
+        tasks = {}
+        for sprint in self.db.Sprint.collection.aggregate([
+            {'$unwind': "$tasks"},
+            {'$unwind': "$tasks.subtasks"},
+            {'$match': { '$or': [
                 {'tasks.title': {'$regex': '.*' + phrase + '.*', '$options': 'i'}},
                 {'tasks.subtasks.title': {'$regex': '.*' + phrase + '.*', '$options': 'i'}}
-            ]},
-            {
-                'name': 1, '_id': 0,
+            ]}},
+            {'$group': {'_id':  "$name", 'tasks': {'$addToSet': "$tasks"} }},
+            #{'$group': {'_id': {'name': "$_id", 'title': "$tasks.title"}, 'tasks.subtasks': {'$addToSet': "$tasks.subtasks"} } },
+            #{'$group': {'_id': {'name': '$name', 'subtasks': {'$push': '$tasks.subtasks'} }}},
+            {'$project': {
                 'tasks.title': 1, 'tasks.estimated': 1, 'tasks.spent': 1,
-                'tasks.subtasks.title': 1, 'tasks.subtasks.estimated' :1, 'tasks.subtasks.spent': 1
-            }
-        ):
-            results.append(r)
-            break
+                'tasks.subtasks.title': 1, 'tasks.subtasks.estimated': 1, 'tasks.subtasks.spent': 1,
+            }},
+            {'$sort': {'name': 1}}
+        ])['result']:
+            tasks = {}
+            for t in sprint['tasks']:
+                if t['title'] not in tasks:
+                    tasks[t['title']] = {
+                        'title': t['title'],
+                        'estimated': t['estimated'],
+                        'spent': t['spent'],
+                        'subtasks': []
+                    }
+                tasks[t['title']]['subtasks'].append(t['subtasks'])
+            sprint['tasks'] = tasks.values()
+            results.append(sprint)
+
         return results

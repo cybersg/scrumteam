@@ -17,33 +17,49 @@
 	</div>
 </div>
 
-<div>
-	<div class="row" data-bind="visible: sprints().length > 0">
-		<div class="col-md-2">Sprint</div>
-		<div class="col-md-2">Task</div>
-		<div class="col-md-2">Subtask</div>
-		<div class="col-md-2">Estimated</div>
-		<div class="col-md-2">Spent</div>
-		<div class="col-md-2">Ratio</div>
-	</div>
-</div>
-<div data-bind="foreach: sprints">
-	<div class="row">
-		<div class="col-md-2" data-bind="text: name"></div>
-		<div class="col-md-2"></div>
-		<div class="col-md-2"></div>
-		<div class="col-md-2"></div>
-		<div class="col-md-2"></div>
-		<div class="col-md-2"></div>
-	</div>
-	<div data-bind="foreach: $data.tasks">
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-2" data-bind="text: title"></div>
-			<div class="col-md-2"></div>
-			<div class="col-md-2" data-bind="text: estimated"></div>
-			<div class="col-md-2" data-bind="text: spent"></div>
-			<div class="col-md-2" data-bind="text: ratio"></div>
-		</div>
-	</div>
-</div>
+<table class="table">
+	<tbody data-bind="foreach: sprints">
+		<tr>
+			<td><h4 data-bind="text:name"></h4>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table class="table">
+				<thead><tr>
+					<td>Task</td>
+					<td></td>
+					<td>Estimated</td>
+					<td>Spent</td>
+					<td>Ratio</td>
+				</tr></thead>
+				<tbody data-bind="foreach: $data.tasks">
+					<tr>
+						<td data-bind="html: title"></td>
+						<td>
+							<table class="table" data-bind="visible: $data.subtasks().length > 0">
+								<thead><tr>
+									<td>Subtask</td>
+									<td>Estimated</td>
+									<td>Spent</td>
+									<td>Ratio</td>
+								</tr></thead>
+								<tbody class="table" data-bind="foreach: $data.subtasks">
+									<tr>
+										<td data-bind="html: title"></td>
+										<td data-bind="text: estimated"></td>
+										<td data-bind="text: spent"></td>
+										<td data-bind="text: ratio"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td data-bind="text: estimated"></td>
+						<td data-bind="text: spent"></td>
+						<td data-bind="text: ratio"></td>
+					</tr>
+				</tbody>
+			</td>
+		</tr>
+	</tbody>
+</table>
